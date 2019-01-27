@@ -3,6 +3,7 @@ package main
 import (
 	"archive/zip"
 	"fmt"
+	"github.com/jasonlvhit/gocron"
 	"io"
 	"io/ioutil"
 	"log"
@@ -14,14 +15,22 @@ import (
 
 func main()  {
 
+	gocron.Every(2).Minutes().Do(task)
+
+	<- gocron.Start()
+
+}
+
+func task()  {
+
 	mysqlBinDir := "C:/xampp71/mysql/bin"
-	database := "tunjangan-babelprov"
+	database := "ace-asesmen"
 	outputDir := "C:/goprojects"
 
 	waktu := time.Now()
 
-	baseName := fmt.Sprintf("%s-%d-%02d-%02d-%02d",database,waktu.Year(),
-		waktu.Month(),waktu.Day(),waktu.Hour())
+	baseName := fmt.Sprintf("%s-%d-%02d-%02d-%02d-%02d",database,waktu.Year(),
+		waktu.Month(),waktu.Day(),waktu.Hour(),waktu.Minute())
 
 	sqlOutputFile := fmt.Sprintf("%s/%s.sql",outputDir,baseName)
 
@@ -64,7 +73,7 @@ func zipFile(sourceFile string, targetFile string) {
 }
 
 func mysqldump(mysqlBinDir string, database string, sqlOutputFile string) string {
-	args := []string{"-u","root",database}
+	args := []string{"-u","root",database,"--ignore-table=adms_db.devlog"}
 	cmd := exec.Command("mysqldump",args ...)
 	cmd.Dir = mysqlBinDir
 
