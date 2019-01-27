@@ -23,14 +23,14 @@ func main() {
 
 func task() {
 
-	mysqlBinDir := "C:/xampp71/mysql/bin"
+	mysqlBinDir := "C:/iclockSvr/MySQL/bin"
 	database := "adms_db"
-	outputDir := "C:/goprojects"
+	outputDir := "C:/xampp71/htdocs/tunjangan"
 
 	waktu := time.Now()
 
-	baseName := fmt.Sprintf("%s-%d-%02d-%02d-%02d-%02d", database, waktu.Year(),
-		waktu.Month(), waktu.Day(), waktu.Hour(), waktu.Minute())
+	baseName := fmt.Sprintf("%s-%d-%02d-%02d-%02d", database, waktu.Year(),
+		waktu.Month(), waktu.Day(), waktu.Hour())
 
 	sqlOutputFile := fmt.Sprintf("%s/%s.sql", outputDir, baseName)
 
