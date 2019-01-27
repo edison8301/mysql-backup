@@ -13,32 +13,32 @@ import (
 	"time"
 )
 
-func main()  {
+func main() {
 
-	gocron.Every(2).Minutes().Do(task)
+	gocron.Every(1).Hour().Do(task)
 
-	<- gocron.Start()
+	<-gocron.Start()
 
 }
 
-func task()  {
+func task() {
 
 	mysqlBinDir := "C:/xampp71/mysql/bin"
-	database := "ace-asesmen"
+	database := "adms_db"
 	outputDir := "C:/goprojects"
 
 	waktu := time.Now()
 
-	baseName := fmt.Sprintf("%s-%d-%02d-%02d-%02d-%02d",database,waktu.Year(),
-		waktu.Month(),waktu.Day(),waktu.Hour(),waktu.Minute())
+	baseName := fmt.Sprintf("%s-%d-%02d-%02d-%02d-%02d", database, waktu.Year(),
+		waktu.Month(), waktu.Day(), waktu.Hour(), waktu.Minute())
 
-	sqlOutputFile := fmt.Sprintf("%s/%s.sql",outputDir,baseName)
+	sqlOutputFile := fmt.Sprintf("%s/%s.sql", outputDir, baseName)
 
-	zipOutputFile := fmt.Sprintf("%s/%s.zip",outputDir,baseName)
+	zipOutputFile := fmt.Sprintf("%s/%s.zip", outputDir, baseName)
 
-	mysqldump(mysqlBinDir,database,sqlOutputFile)
+	mysqldump(mysqlBinDir, database, sqlOutputFile)
 
-	zipFile(sqlOutputFile,zipOutputFile)
+	zipFile(sqlOutputFile, zipOutputFile)
 
 }
 
@@ -73,8 +73,8 @@ func zipFile(sourceFile string, targetFile string) {
 }
 
 func mysqldump(mysqlBinDir string, database string, sqlOutputFile string) string {
-	args := []string{"-u","root",database,"--ignore-table=adms_db.devlog"}
-	cmd := exec.Command("mysqldump",args ...)
+	args := []string{"-u", "root", database, "--ignore-table=adms_db.devlog"}
+	cmd := exec.Command("mysqldump", args...)
 	cmd.Dir = mysqlBinDir
 
 	stdout, err := cmd.StdoutPipe()
